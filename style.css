@@ -1,0 +1,7 @@
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50vw;
+  gap: 5px;
+  margin: auto;
+}
