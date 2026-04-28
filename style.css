@@ -1,7 +1,19 @@
+@font-face {
+  font-family: 'digital-font';
+  src: url('./e1234.italic.ttf');
+}
+
+* {
+  border: 1px red solid;
+}
+
+.display {
+  font-family: 'digital-font';
+}
+
 .buttons {
   display: flex;
   flex-wrap: wrap;
   width: 50vw;
   gap: 5px;
-  margin: auto;
 }
