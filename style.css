@@ -3,17 +3,87 @@
   src: url('./e1234.italic.ttf');
 }
 
-* {
-  border: 1px red solid;
+html { box-sizing: border-box; }
+
+*,
+*::before,
+*::after { box-sizing: inherit; }
+
+/* * { border: 1px red solid; } */
+
+.calculator {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  width: 300px;
+  margin: 0 auto;
+  gap: 5px;
+  padding: 5px;
+  border: 3px black solid;
+  border-radius: 5px;
 }
 
 .display {
+  display: flex;
+  justify-content: end;
+  align-items: center;
   font-family: 'digital-font';
+  font-size: 36px;
+  border: 2px rgb(71, 71, 71) solid;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .buttons {
   display: flex;
-  flex-wrap: wrap;
-  width: 50vw;
+  flex-direction: column;
   gap: 5px;
+  align-items: end;
+  flex-grow: 1;
+}
+
+.erase {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  justify-content: end;
+}
+
+.erase > *  {
+  flex-grow: 1;
+}
+
+.numbers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 5px;
+}
+
+.numbers > * {
+  width: 30%;
+  font-size: 15px;
+  flex-grow: 1;
+}
+
+.calculation {
+  display: flex;
+  gap: 5px;
+  flex-grow: 1;
+}
+
+.operations {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 15%;
+}
+
+.operations > * {
+  font-size: 15px;
+  flex-grow: 1;
+}
+
+button {
+  border-radius: 3px;
 }
