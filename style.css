@@ -11,6 +11,15 @@ html { box-sizing: border-box; }
 
 /* * { border: 1px red solid; } */
 
+p {
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 50px;
+  color: crimson;
+  text-align: center;
+  margin: 40px;
+}
+
 .calculator {
   display: flex;
   flex-direction: column;
@@ -25,10 +34,9 @@ html { box-sizing: border-box; }
 
 .display {
   display: flex;
-  justify-content: end;
-  align-items: center;
   font-family: 'digital-font';
   font-size: 36px;
+  text-align: end;
   border: 2px rgb(71, 71, 71) solid;
   border-radius: 5px;
   padding: 10px;
@@ -51,6 +59,8 @@ html { box-sizing: border-box; }
 
 .erase > *  {
   flex-grow: 1;
+  font-size: 15px;
+  height: 30px;
 }
 
 .numbers {
@@ -62,7 +72,7 @@ html { box-sizing: border-box; }
 
 .numbers > * {
   width: 30%;
-  font-size: 15px;
+  font-size: 20px;
   flex-grow: 1;
 }
 
@@ -80,7 +90,7 @@ html { box-sizing: border-box; }
 }
 
 .operations > * {
-  font-size: 15px;
+  font-size: 20px;
   flex-grow: 1;
 }
 
