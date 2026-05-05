@@ -45,7 +45,6 @@ class Calculator {
 }
 
 const display = document.querySelector('.display');
-let value = display.value;
 const numbers = document.querySelectorAll('.numbers *');
 const dotButton = document.getElementById('dot');
 
@@ -53,7 +52,7 @@ numbers.forEach(button => {
     button.addEventListener('click', e => {
         const input = e.target.innerText;
         console.log(e.target.innerText);
-        value += input;
+        display.value += input;
         if (input === '.') {
             dotButton.disabled = true;
         }
