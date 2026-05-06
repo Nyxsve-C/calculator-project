@@ -47,11 +47,12 @@
 const display = document.querySelector('.display');
 const numbers = document.querySelectorAll('.numbers *');
 const dot = document.getElementById('dot');
+const erase = document.querySelectorAll('.erase *');
 
 numbers.forEach(button => {
     button.addEventListener('click', e => {
         const input = e.target.innerText;
-        console.log(e.target.innerText);
+        console.log(input);
         if (display.value === '0') {
             display.value = input;
         } else {
@@ -63,5 +64,22 @@ numbers.forEach(button => {
                 display.value = '0.';
             }
         };
+    });
+});
+
+erase.forEach(button => {
+    button.addEventListener('click', e => {
+        const action = e.target.innerText;
+        console.log(action);
+        if (action === 'C') {
+            display.value = '';
+            dot.disabled = false;
+        } else {
+            const last = display.value.slice(-1);
+            display.value = display.value.slice(0, -1);
+            if (last === '.') {
+                dot.disabled = false;
+            }
+        }
     });
 });
