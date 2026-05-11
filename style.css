@@ -9,8 +9,6 @@ html { box-sizing: border-box; }
 *::before,
 *::after { box-sizing: inherit; }
 
-/* * { border: 1px red solid; } */
-
 p {
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
@@ -84,14 +82,14 @@ span { pointer-events: none; }
   flex-grow: 1;
 }
 
-.operations {
+.operators {
   display: flex;
   flex-direction: column;
   gap: 5px;
   width: 15%;
 }
 
-.operations > * {
+.operators > * {
   font-size: 20px;
   flex-grow: 1;
 }
