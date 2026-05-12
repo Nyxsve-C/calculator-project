@@ -44,6 +44,14 @@
 //     }
 // }
 
+const keys = {
+    numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, '.'],
+    dot: '.',
+    erase: ['c', 'Backspace'],
+    operators: ['/', '*', '-', '+', 'Enter'],
+    equals: '=',
+}
+
 const operations = {
     '÷': (a, b) => a / b,
     '×': (a, b) => a * b,
@@ -82,6 +90,7 @@ numbers.forEach(button => {
     button.addEventListener('click', e => {
         const input = e.target.innerText;
         console.log(input);
+        erase[1].disabled = false;
         operators.forEach(operator => operator.disabled = false);
         if (clearDisplayScheduled) {
             display.value = '';
@@ -100,7 +109,7 @@ numbers.forEach(button => {
         }
         if (state === 'waitingA') a = display.value, equals.disabled = true;        
         if (state === 'waitingB') b = display.value;
-        console.log('display:', display.value, 'a:', a, 'b:', b);
+        console.log('display:', display.value, '\na:', a, '\nb:', b, '\noperator:', operator);
         updateState();
     });
 });
@@ -114,7 +123,7 @@ operators.forEach(button => {
             operator = e.target.innerText;
             console.log(operator);
         } else {
-            const result = operate(operator, +a, +b);
+            const result = Math.floor(operate(operator, +a, +b) * 100) / 100;
             if (result === Infinity) {
                 operator = a = b = '';
                 operators.forEach(operator => operator.disabled = true);
@@ -125,12 +134,13 @@ operators.forEach(button => {
                 operator = e.target.innerText;
                 a = result;
                 b = '';
+                equals.disabled = true;
                 if (operator === '=') {
                     operator = '';
-                    equals.disabled = true;
                 }
             }
         }
+        erase[1].disabled = true;
         dot.disabled = false;
         clearDisplayScheduled = true;
         updateState();
@@ -154,9 +164,11 @@ erase.forEach(button => {
             }
             if (display.value === '') {
                 dot.disabled = false;
-                operator = a = b = '';
                 operators.forEach(operator => operator.disabled = true);
             }
+            if (state === 'waitingA') a = display.value, equals.disabled = true;        
+            if (state === 'waitingB') b = display.value;
+            console.log('display:', display.value, 'a:', a, 'b:', b);
         }
         updateState();
     });
