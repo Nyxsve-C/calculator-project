@@ -21,8 +21,8 @@ p {
 .calculator {
   display: flex;
   flex-direction: column;
-  height: 300px;
-  width: 300px;
+  height: 450px;
+  width: 320px;
   margin: 0 auto;
   gap: 5px;
   padding: 5px;
@@ -33,7 +33,7 @@ p {
 .display {
   display: flex;
   font-family: 'digital-font';
-  font-size: 36px;
+  font-size: 45px;
   text-align: end;
   border: 2px rgb(71, 71, 71) solid;
   border-radius: 5px;
@@ -57,7 +57,7 @@ p {
 
 .erase > *  {
   flex-grow: 1;
-  font-size: 15px;
+  font-size: 20px;
   height: 30px;
 }
 
@@ -70,7 +70,7 @@ p {
 
 .numbers > * {
   width: 30%;
-  font-size: 20px;
+  font-size: 25px;
   flex-grow: 1;
 }
 
@@ -86,11 +86,11 @@ span { pointer-events: none; }
   display: flex;
   flex-direction: column;
   gap: 5px;
-  width: 15%;
+  width: 30%;
 }
 
 .operators > * {
-  font-size: 20px;
+  font-size: 25px;
   flex-grow: 1;
 }
 
