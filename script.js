@@ -136,6 +136,7 @@ updateState();
 
 numbers.forEach(button => {
     button.addEventListener('click', e => {
+        e.target.blur();
         const input = e.target.innerText;
         handleInput(input);
         updateState();
@@ -144,6 +145,7 @@ numbers.forEach(button => {
 
 operators.forEach(button => {
     button.addEventListener('click', e => {
+        e.target.blur();
         const getOperator = () => e.target.innerText;
         handleOperator(getOperator);
         updateState();
@@ -152,6 +154,7 @@ operators.forEach(button => {
 
 erase.forEach(button => {
     button.addEventListener('click', e => {
+        e.target.blur();
         const action = e.target.innerText;
         if (action === 'C') {
             clear();
