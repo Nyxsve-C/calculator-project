@@ -31,7 +31,6 @@ p {
 }
 
 .display {
-  display: flex;
   font-family: 'digital-font';
   font-size: 45px;
   text-align: end;
