@@ -1,45 +1,34 @@
 const display = document.querySelector('.display');
-const numbers = document.querySelectorAll('.numbers *');
 const dot = document.getElementById('dot');
 const erase = document.querySelectorAll('.erase *');
 const operators = document.querySelectorAll('.operators *');
 const equals = document.getElementById('equals');
 const keys = {
     numbers: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'],
-    operators: {
-        '/': '÷',
-        '*': '×',
-        '-': '-',
-        '+': '+',
-    },
-    'Enter': '=',
-    erase: {
-        'c': 'C', 
-        'Backspace': 'Back',
-    },
+    operators: ['/', '*', '-', '+', 'Enter'],
+    erase: ['c', 'Backspace'],
 }
 const operations = {
-    '÷': (a, b) => a / b,
-    '×': (a, b) => a * b,
+    '/': (a, b) => a / b,
+    '*': (a, b) => a * b,
     '-': (a, b) => a - b,
     '+': (a, b) => a + b,
 }
-
 let state;
-let operator;
-let clearDisplayScheduled;
 let a;
 let b;
+let operator;
+let clearDisplayScheduled;
 
 function updateState() {
-    state = !operator && !b ? 'waitingA' :
-            a && operator ? 'waitingB' :
-            '';
-    console.log(state);
+    state = !operator && !b ? 'waitingA'
+            : a && operator ? 'waitingB'
+            : '';
+    console.log('state:', state);
+    console.log('display:', display.value, '\na:', a, '\nb:', b, '\noperator:', operator);
 }
 
-function handleInput(input) {
-    console.log(input);
+function handleNumber(numberInput) {
     erase[1].disabled = false;
     operators.forEach(operator => operator.disabled = false);
     if (clearDisplayScheduled) {
@@ -47,9 +36,9 @@ function handleInput(input) {
         clearDisplayScheduled = false;
     }
     if (display.value === '0') {
-        display.value = input;
+        display.value = numberInput;
     } else {
-        display.value += input;
+        display.value += numberInput;
     }
     if (display.value.includes('.')) {
         dot.disabled = true;
@@ -59,7 +48,6 @@ function handleInput(input) {
     }
     if (state === 'waitingA') a = display.value, equals.disabled = true;        
     if (state === 'waitingB') b = display.value;
-    console.log('display:', display.value, '\na:', a, '\nb:', b, '\noperator:', operator);
 }
 
 function operate(operator, a, b) {
@@ -72,133 +60,102 @@ function handleDivisionByZero() {
     display.value = 'error';
 }
 
-function nextOperationSetup(operatorGetter, result) {
-    console.log(operator, result);
+function nextOperationSetup(operatorInput, result) {
+    console.log('result:', result);
     display.value = result;
-    operator = operatorGetter();
+    operator = operatorInput;
     a = result;
     b = '';
     equals.disabled = true;
+}
+
+function handleOperation(operatorInput) {
+    const result = operate(operator, +a, +b);
+    if (result === Infinity) {
+        handleDivisionByZero();
+    } else {
+        nextOperationSetup(operatorInput, result);
+    }
 }
 
 function operationTeardown() {
     erase[1].disabled = true;
     dot.disabled = false;
     clearDisplayScheduled = true;
-    if (operator === '=') {
+    if (operator === 'Enter') {
         operator = '';
     }
 }
 
-function handleOperator(operatorGetter) {
-    if (!operator || !b) {
-            operator = operatorGetter();
-            console.log(operator);
+function handleOperator(operatorInput) {    
+    if (operatorInput !== 'Enter' && !operators[0].disabled) {
+        if (!operator || !b) {
+            operator = operatorInput;
         } else {
-            const result = operate(operator, +a, +b);
-            if (result === Infinity) {
-                handleDivisionByZero();
-            } else {
-                nextOperationSetup(operatorGetter, result);
-            }
+            handleOperation(operatorInput);
         }
         operationTeardown();
+    } else if (operatorInput === 'Enter' && !equals.disabled) {
+        console.log('Enter');
+        handleOperation(operatorInput);
+        operationTeardown();
+    }
 }
 
 function clear() {
     console.log('Clear');
+    operator = a = b = '';
     display.value = '';
     dot.disabled = false;
-    operator = a = b = '';
+    erase[1].disabled = true;
     operators.forEach(operator => operator.disabled = true);
 }
 
 function back() {
-    console.log('Back');
-    const last = display.value.slice(-1);
-    display.value = display.value.slice(0, -1);
-    if (last === '.') {
-        dot.disabled = false;
+    if (!erase[1].disabled) {
+        console.log('Back');
+        const last = display.value.slice(-1);
+        display.value = display.value.slice(0, -1);
+        if (last === '.') {
+            dot.disabled = false;
+        }
+        if (display.value === '') {
+            dot.disabled = false;
+            erase[1].disabled = true;
+            operators.forEach(operator => operator.disabled = true);
+        }
+        if (state === 'waitingA') a = display.value, equals.disabled = true;        
+        if (state === 'waitingB') b = display.value;
     }
-    if (display.value === '') {
-        dot.disabled = false;
-        erase[1].disabled = true;
-        operators.forEach(operator => operator.disabled = true);
+}
+
+function handleErase(eraseInput) {
+    if (eraseInput === 'c') {
+        clear();
+    } else {
+        back();
     }
-    if (state === 'waitingA') a = display.value, equals.disabled = true;        
-    if (state === 'waitingB') b = display.value;
-    console.log('display:', display.value, '\na:', a, '\nb:', b, '\noperator:', operator);
 }
 
 operators.forEach(operator => operator.disabled = true);
 erase[1].disabled = true;
 updateState();
 
-numbers.forEach(button => {
-    button.addEventListener('click', e => {
+['click', 'keydown'].forEach(eventType => {
+    document.addEventListener(eventType, e => {
+        const input = e instanceof PointerEvent ? e.target.value : e.key;
         e.target.blur();
-        const input = e.target.innerText;
-        handleInput(input);
-        updateState();
-    });
-});
-
-operators.forEach(button => {
-    button.addEventListener('click', e => {
-        e.target.blur();
-        const getOperator = () => e.target.innerText;
-        handleOperator(getOperator);
-        updateState();
-    });
-});
-
-erase.forEach(button => {
-    button.addEventListener('click', e => {
-        e.target.blur();
-        const action = e.target.innerText;
-        if (action === 'C') {
-            clear();
+        if (keys.numbers.includes(input)) {
+            handleNumber(input);
             updateState();
-        } else {
-            back();
+        }
+        if (keys.operators.includes(input)) {
+            handleOperator(input);
+            updateState();
+        }
+        if (keys.erase.includes(input)) {
+            handleErase(input);
             updateState();
         }
     });
-});
-
-document.addEventListener('keydown', e => {
-    const key = e.key;
-    const getOperator = () => keys.operators[key];
-    if (keys.numbers.includes(key)) {
-        const input = key;
-        handleInput(input);
-        updateState();
-    }
-    if (!operators[0].disabled) {
-        if (key in keys.operators) {
-            handleOperator(getOperator);
-            updateState();
-        }
-    }
-    if(key === 'Enter' && !equals.disabled) {
-        console.log('Enter');
-        const result = operate(operator, +a, +b);
-        if (result === Infinity) {
-            handleDivisionByZero();
-        } else {
-            nextOperationSetup(getOperator, result);
-        }
-        operationTeardown();
-        updateState();
-    }
-    if (key in keys.erase) {
-        const action = keys.erase[key];
-        if (action === 'C') {
-            clear();
-            updateState();
-        } else if (!erase[1].disabled) {
-            back();
-            updateState();
-        }
-    }
 });

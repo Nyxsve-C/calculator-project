@@ -9,13 +9,20 @@ html { box-sizing: border-box; }
 *::before,
 *::after { box-sizing: inherit; }
 
-p {
+h1, p {
   font-family: 'Courier New', Courier, monospace;
   font-weight: bold;
   font-size: 50px;
   color: crimson;
   text-align: center;
-  margin: 40px;
+  margin-top: 40px;
+}
+
+p {
+  font-size: 23px;
+  color: cadetblue;
+  margin-top: -25px;
+  margin-bottom: 40px;
 }
 
 .calculator {
@@ -51,7 +58,6 @@ p {
   display: flex;
   gap: 5px;
   width: 100%;
-  justify-content: end;
 }
 
 .erase > *  {
@@ -60,24 +66,21 @@ p {
   height: 30px;
 }
 
+.calculation {
+  display: flex;
+  gap: 5px;
+  flex-grow: 1;
+}
+
 .numbers {
   display: flex;
   flex-wrap: wrap;
-  justify-content: end;
   gap: 5px;
 }
 
 .numbers > * {
   width: 30%;
   font-size: 25px;
-  flex-grow: 1;
-}
-
-span { pointer-events: none; }
-
-.calculation {
-  display: flex;
-  gap: 5px;
   flex-grow: 1;
 }
 
